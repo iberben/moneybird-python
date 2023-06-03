@@ -186,6 +186,16 @@ class MoneyBird(object):
         except ValueError:
             logger.error("API response is not JSON decodable")
             data = None
+            
+        # check if it's a file
+        if 'content-type' in response.headers:
+            if response.headers['content-type'] == 'application/pdf':
+                data = {
+                    'headers': response.headers,
+                    'content': response.content,
+                    'url': response.url,
+                    'status_code': response.status_code,
+                }
 
         return data
 
